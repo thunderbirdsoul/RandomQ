@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RandomQ</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+
+      #container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      #result {
+        margin-top: 20px;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #333;
+      }
+
+      #number-range {
+        display: block;
+        margin-top: 10px;
+      }
+
+      label {
+        margin-right: 5px;
+        font-size: 0.9em;
+        color: #555;
+      }
+
+      input[type="number"] {
+        width: 60px;
+        padding: 5px;
+        margin: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1em;
+      }
+
+      select {
+        padding: 5px;
+        margin-top: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div id="container">
+        <h1>Генератор</h1>
+        <label for="type">Виберіть тип генератора:</label>
+        <select id="type">
+          <option value="number">Число</option>
+          <option value="quote">Цитата</option>
+        </select>
+        <div id="number-range">
+          <label for="min">Min:</label>
+          <input type="number" id="min" value="1" placeholder="Мінімум" />
+          <label for="max">Max:</label>
+          <input type="number" id="max" value="100" placeholder="Максимум" />
+        </div>
+        <button onclick="generate()">Згенерувати</button>
+        <div id="result" aria-live="polite"></div>
+      </div>
+    </main>
+    <script>
+      const quotes = [
+        "Успіх - це не ключ до щастя. Щастя - це ключ до успіху.",
+        "Єдиний спосіб робити велику роботу - це любити те, що ти робиш.",
+        "Майбутнє належить тим, хто вірить у красу своєї мрії.",
+        "Не важливо, як повільно ти йдеш, головне - не зупиняйся.",
+        "Життя - це те, що відбувається з тобою, поки ти будуєш плани на майбутнє.",
+      ];
+
+      const resultDiv = document.getElementById("result");
+      const typeSelect = document.getElementById("type");
+      const numberRangeDiv = document.getElementById("number-range");
+
+      typeSelect.addEventListener("change", () => {
+        if (typeSelect.value === "number") {
+          numberRangeDiv.style.display = "block";
+        } else {
+          numberRangeDiv.style.display = "none";
+        }
+      });
+
+      function generate() {
+        const type = document.getElementById("type").value;
+
+        if (type === "number") {
+          const min = parseInt(document.getElementById("min").value);
+          const max = parseInt(document.getElementById("max").value);
+
+          if (isNaN(min) || isNaN(max)) {
+            resultDiv.textContent = "Будь ласка, введіть коректні числа.";
+            return;
+          }
+
+          if (min > max) {
+            resultDiv.textContent = "Min не може бути більшим за Max.";
+            return;
+          }
+
+          const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+          resultDiv.textContent = randomNumber;
+        } else if (type === "quote") {
+          const randomIndex = Math.floor(Math.random() * quotes.length);
+          resultDiv.textContent = quotes[randomIndex];
+        }
+      }
+    </script>
+  </body>
+</html>
